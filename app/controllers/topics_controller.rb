@@ -1,14 +1,14 @@
 class TopicsController < ApplicationController
   before_action :authorize_request
+  before_action :set_topic, only: [:show, :update, :destroy]
 
   def index
     @topics = Topic.all
-    render json: @topics, status: 200
+    render json: @topics, status: :ok
   end
 
   def show
-    @topic = Topic.find(params[:id])
-    render json: @topic, status: 200
+    render json: @topic, status: :ok
   end
 
   def create
@@ -22,18 +22,25 @@ class TopicsController < ApplicationController
   end
 
   def update
-    @topic = Topic.find(params[:id])
-
-    if @topic.save
-      render json: @topic, status: 200
+    if @topic.update(topic_params)
+      render json: @topic, status: :ok
     else
       render json: { errors: @topic.errors.full_messages }, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @topic.destroy
+    head :no_content
   end
 
   private
 
   def topic_params
     params.require(:topic).permit(:name, :description)
+  end
+
+  def set_topic
+    @topic = Topic.find(params[:id])
   end
 end

@@ -10,12 +10,8 @@ Rails.application.routes.draw do
 
   resources :goals, only: [:index, :create, :update, :destroy, :show]
 
-  resources :topics, only: [:create]
+  resources :topics, only: [:create, :update, :destroy]
 
   post "/login", to: "sessions#create"
   post "/signup", to: "users#create"
-
-  get "/topics/:id", to: "topics#show"
-
-  patch "/topics/:id", to: "topics#update"
 end
