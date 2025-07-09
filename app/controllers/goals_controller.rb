@@ -4,11 +4,11 @@ class GoalsController < ApplicationController
 
   def index
     @goals = @current_user.goals.includes(:topic)
-    render json: @goals, include: :topic
+    render json: @goals, include: [:topic, :tags]
   end
 
   def show
-    render json: @goal, include: :topic
+    render json: @goal, include: [:topic, :tags]
   end
 
   def create

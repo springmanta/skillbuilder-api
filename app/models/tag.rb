@@ -1,6 +1,14 @@
 class Tag < ApplicationRecord
-  validates :name, presence: true, uniqueness: true
-
   has_many :taggings, dependent: :destroy
-  has_many :goals, through: :taggings
+  has_many :topics, through: :taggings
+
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
+
+  def as_json(options = {})
+    super({ only: [:id], methods: [:formatted_name] }.merge(options))
+  end
+
+  def formatted_name
+    name.capitalize
+  end
 end

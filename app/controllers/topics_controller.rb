@@ -3,12 +3,12 @@ class TopicsController < ApplicationController
   before_action :set_topic, only: [:show, :update, :destroy]
 
   def index
-    @topics = Topic.all
-    render json: @topics, status: :ok
+    @topics = Topic.includes(:tags).all
+    render json: @topics.as_json(include: :tags), status: :ok
   end
 
   def show
-    render json: @topic, status: :ok
+    render json: @topic.as_json(include: :tags), status: :ok
   end
 
   def create

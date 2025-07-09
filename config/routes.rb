@@ -10,7 +10,9 @@ Rails.application.routes.draw do
 
   resources :goals, only: [:index, :create, :update, :destroy, :show]
 
-  resources :topics, only: [:create, :update, :destroy]
+  resources :topics, only: [:index, :show, :create, :update, :destroy] do
+    resources :tags, only: [:create, :index]
+  end
 
   post "/login", to: "sessions#create"
   post "/signup", to: "users#create"

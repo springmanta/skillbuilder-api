@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_08_234748) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_09_114544) do
   create_table "categories", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -28,12 +28,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_08_234748) do
   end
 
   create_table "taggings", force: :cascade do |t|
-    t.integer "goal_id", null: false
     t.integer "tag_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["goal_id"], name: "index_taggings_on_goal_id"
+    t.integer "topic_id", null: false
     t.index ["tag_id"], name: "index_taggings_on_tag_id"
+    t.index ["topic_id"], name: "index_taggings_on_topic_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -61,6 +61,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_08_234748) do
 
   add_foreign_key "goals", "topics"
   add_foreign_key "goals", "users"
-  add_foreign_key "taggings", "goals"
   add_foreign_key "taggings", "tags"
+  add_foreign_key "taggings", "topics"
 end
