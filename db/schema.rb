@@ -10,7 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_08_141318) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_08_234748) do
+  create_table "categories", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "goals", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -20,6 +25,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_08_141318) do
     t.datetime "updated_at", null: false
     t.index ["topic_id"], name: "index_goals_on_topic_id"
     t.index ["user_id"], name: "index_goals_on_user_id"
+  end
+
+  create_table "taggings", force: :cascade do |t|
+    t.integer "goal_id", null: false
+    t.integer "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["goal_id"], name: "index_taggings_on_goal_id"
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "topics", force: :cascade do |t|
@@ -41,4 +61,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_08_141318) do
 
   add_foreign_key "goals", "topics"
   add_foreign_key "goals", "users"
+  add_foreign_key "taggings", "goals"
+  add_foreign_key "taggings", "tags"
 end
