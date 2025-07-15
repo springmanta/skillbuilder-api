@@ -1,6 +1,7 @@
 class TagsController < ApplicationController
-  before_action :authorize_request, only: [:create]
+  before_action :authorize_request, only: [:create, :update]
   before_action :set_topic
+  before_action :set_tag, only: [:update]
 
   def index
     render json: @topic.tags
@@ -18,6 +19,15 @@ class TagsController < ApplicationController
     render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
   end
 
+  def update
+    
+    if @tag.update(tag_params)
+      render json: @tag, status: :ok
+    else
+      render json: { errors: @tag.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def tag_params
@@ -26,5 +36,9 @@ class TagsController < ApplicationController
 
   def set_topic
     @topic = Topic.find(params[:topic_id])
+  end
+
+  def set_tag
+    @tag = Tag.find(params[:id])
   end
 end

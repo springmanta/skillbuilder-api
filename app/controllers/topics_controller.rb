@@ -15,6 +15,7 @@ class TopicsController < ApplicationController
     @topic = Topic.new(topic_params)
 
     if @topic.save
+      assign_tags(@topic)
       render json: @topic, status: :created
     else
       render json: { errors: @topic.errors.full_messages }, status: :unprocessable_entity
@@ -43,4 +44,17 @@ class TopicsController < ApplicationController
   def set_topic
     @topic = Topic.find(params[:id])
   end
+
+  def tag_names
+    params.require(:topic).permit(tags: [])[:tags] || []
+  end
+
+def assign_tags(topic)
+  tag_names = params.dig(:topic, :tags) || []
+
+  tag_names.each do |tag_name|
+    tag = Tag.find_or_create_by(name: tag_name.downcase)
+    topic.tags << tag unless topic.tags.include?(tag)
+  end
+end
 end
